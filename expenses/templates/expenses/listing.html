@@ -11,8 +11,10 @@
     <h2>List</h2>
     <ul>
     {%for transcation in transactions%}
-        <li> {{transcation.description}} -- {{transcation.date}} -- {{transcation.value}} -- {{transcation.category}} </li>
+        <li> <a href="{% url 'url_update' transcation.id %}">{{transcation.description}} -- {{transcation.date}} -- {{transcation.value}} -- {{transcation.category}} </a>  </li>
     {% endfor%}
     </ul>
+
+    <a href= "{% url 'url_new' %}">New</a>
 </body>
 </html>
