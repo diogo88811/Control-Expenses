@@ -15,9 +15,9 @@
   {{ form.as_p }}
 
   <button type="sumbit"> Save  </button>
-
-  <a href="{% url 'url_delete' transaction.id %}">Delete</a>
-
+    {% if transaction %}
+      <a href="{% url 'url_delete' transaction.id %}">Delete</a>
+    {% endif %}
 
 </form>
 
