@@ -8,14 +8,29 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>List</h2>
+    <h2>Transaction</h2>
     <ul>
     {%for transcation in transactions%}
         <li> <a href="{% url 'url_update' transcation.id %}">{{transcation.description}} -- {{transcation.date}} -- {{transcation.value}} -- {{transcation.category}} </a>  </li>
     {% endfor%}
     </ul>
 
-    <a href= "{% url 'url_new' %}">New</a>
-    <a href= "{% url 'url_create_client' %}">Create Client</a>
+    <h2>Clients</h2>
+    <ul>
+    {%for client in clients%}
+        <li> <a> {{client.name}}  </a>  </li>
+    {% endfor%}
+    </ul>
+
+    <h2>Products</h2>
+    <ul>
+    {%for product in products%}
+        <li> <a> {{product.name}}  </a>  </li>
+    {% endfor%}
+    </ul>
+
+    <li> <a href= "{% url 'url_new' %}">New</a> </li>
+    <li> <a href= "{% url 'url_create_client' %}">Create Client</a> </li>
+    <li> <a href= "{% url 'url_create_product' %}">Create Product</a> </li>
 </body>
 </html>

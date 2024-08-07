@@ -1,9 +1,9 @@
 import logging
 
 from django.shortcuts import render, redirect
-from .models import Transaction
+from .models import Transaction, Client, Product
 import datetime
-from .forms import TransactionForm, ClientForm
+from .forms import TransactionForm, ClientForm, ProductForm
 
 def home(request):
     date = {}
@@ -15,6 +15,8 @@ def home(request):
 def listing(request): #read data from the databases
     data = {}
     data['transactions'] = Transaction.objects.all()
+    data['clients'] = Client.objects.all()
+    data['products'] = Product.objects.all()
     return render(request, 'expenses/listing.html', data)
 
 def new_transaction(request): #create a new row on databases
@@ -38,6 +40,17 @@ def create_new_client(request): #create a new row on databases
 
     data['form'] = form
     return render(request, 'expenses/client_form.html', data)
+
+def create_new_product(request): #create a new row on databases
+    data = {}
+    form = ProductForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('url_listing')
+
+    data['form'] = form
+    return render(request, 'expenses/product_form.html', data)
 
 def update(request, pk): #update data on the database
     data = {}
