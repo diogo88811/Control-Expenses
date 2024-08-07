@@ -17,7 +17,7 @@ def listing(request): #read data from the databases
     data['transactions'] = Transaction.objects.all()
     return render(request, 'expenses/listing.html', data)
 
-def new_transaction(request): #create a new rown on databases
+def new_transaction(request): #create a new row on databases
     data = {}
     form = TransactionForm(request.POST or None)
 
