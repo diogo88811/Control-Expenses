@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from expenses.views import home, listing, new_transaction, update, delete
+from expenses.views import home, listing, new_transaction, update, delete, create_new_client
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,6 +23,7 @@ urlpatterns = [
     path('', listing, name='url_listing'),
     path('new', new_transaction, name='url_new'),
     path('update/<int:pk>', update, name='url_update'),
-    path('delete/<int:pk>', delete, name='url_delete')
+    path('delete/<int:pk>', delete, name='url_delete'),
+    path('Create Client', create_new_client, name='url_create_client')
 
 ]

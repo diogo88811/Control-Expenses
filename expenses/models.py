@@ -20,4 +20,12 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.description
+    
+class Client(models.Model):
+    name = models.CharField(max_length=100)
+    phone_number = models.BigIntegerField()
+    id = models.BigIntegerField(primary_key=True)
 
+    def __str__(self):
+        return self.name
+     

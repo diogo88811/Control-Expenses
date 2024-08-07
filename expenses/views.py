@@ -3,7 +3,7 @@ import logging
 from django.shortcuts import render, redirect
 from .models import Transaction
 import datetime
-from .forms import TransactionForm
+from .forms import TransactionForm, ClientForm
 
 def home(request):
     date = {}
@@ -27,6 +27,17 @@ def new_transaction(request): #create a new row on databases
 
     data['form'] = form
     return render(request, 'expenses/form.html', data)
+
+def create_new_client(request): #create a new row on databases
+    data = {}
+    form = ClientForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('url_listing')
+
+    data['form'] = form
+    return render(request, 'expenses/client_form.html', data)
 
 def update(request, pk): #update data on the database
     data = {}
