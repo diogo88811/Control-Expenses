@@ -35,3 +35,24 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Invoice(models.Model):
+    invoice_number = models.CharField(max_length=50)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    date = models.DateField()
+    products = models.ManyToManyField(Product, through='InvoiceProduct')
+
+    def __str__(self):
+        return self.invoice_number
+    
+class InvoiceProduct(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveBigIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity} for {self.invoice.invoice_number}"
+    
+
+

@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from.models import Transaction, Client, Product
+from django.forms.models import inlineformset_factory
+from.models import Transaction, Client, Product, Invoice, InvoiceProduct
 
 
 class TransactionForm(ModelForm):
@@ -16,3 +17,10 @@ class ProductForm(ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'ref']
+
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['invoice_number', 'client', 'date']
+
+InvoiceProductFormset = inlineformset_factory(Invoice, InvoiceProduct, fields=('product', 'quantity', 'price',), extra=1, can_delete=False)

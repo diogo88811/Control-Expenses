@@ -1,9 +1,10 @@
 import logging
 
 from django.shortcuts import render, redirect
+from .forms import InvoiceForm, InvoiceProductFormset
 from .models import Transaction, Client, Product
 import datetime
-from .forms import TransactionForm, ClientForm, ProductForm
+from .forms import TransactionForm, ClientForm, ProductForm, InvoiceForm
 
 def home(request):
     date = {}
@@ -52,7 +53,39 @@ def create_new_product(request): #create a new row on databases
     data['form'] = form
     return render(request, 'expenses/product_form.html', data)
 
+def create_new_invoice(request): #create a new row on databases
+    data = {}
+    form = InvoiceForm(request.POST or None)
 
+    if form.is_valid():
+        form.save()
+        return redirect('url_listing')
+
+    data['form'] = form
+    return render(request, 'expenses/invoice_form.html', data)
+
+
+def create_new_invoice(request):
+    print(request.POST)
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        product_formset = InvoiceProductFormset(request.POST, prefix='product_formset')
+        print("printing product_formset:")
+        print(product_formset)
+
+        if form.is_valid() and product_formset.is_valid():
+            invoice = form.save()
+            for inline_form in product_formset:
+                if inline_form.cleaned_data:
+                    product = inline_form.save(commit=False)
+                    product.invoice = invoice  # Assuming 'invoice' is the foreign key in 'Product' pointing to 'Invoice'
+                    product.save()
+            return redirect('url_listing')
+    else:
+        form = InvoiceForm()
+        product_formset = InvoiceProductFormset(prefix='product_formset')
+
+    return render(request, 'expenses/invoice_form.html', {'form': form, 'product_formset': product_formset})
 
 
 

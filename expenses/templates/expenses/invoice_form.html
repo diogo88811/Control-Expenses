@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+<form method="post">
+
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <h2>Products:</h2>
+  {{ product_formset.management_form }}
+
+  <div id='product_div'> 
+  {% for form in product_formset %}
+    <div class="product-form">
+      {{ form.as_p }}
+    </div>
+  {% endfor %}
+  </div>
+
+  <button type="button" id="add_product">Add another product</button>
+
+  <button type="submit">Save</button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var formCount = parseInt($("#id_product_formset-TOTAL_FORMS").val());
+        var emptyForm = $(".product-form:first").clone();
+        
+        $("#add_product").click(function(e){
+            e.preventDefault();
+            var newForm = emptyForm.clone();
+            newForm.find(':input[name^=product_formset]').each(function () {
+                $(this).attr('name', $(this).attr('name').replace('-0-', '-'+formCount+'-'));
+                $(this).val('');  // reset the value of input fields
+            });
+            
+            $("#product_div").append(newForm);
+            $("#id_product_formset-TOTAL_FORMS").val(formCount+1);
+            formCount++;
+        });
+    });
+</script>
+
+
+</body>
+</html>
