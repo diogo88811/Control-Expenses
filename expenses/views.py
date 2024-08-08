@@ -52,6 +52,11 @@ def create_new_product(request): #create a new row on databases
     data['form'] = form
     return render(request, 'expenses/product_form.html', data)
 
+
+
+
+
+
 def update(request, pk): #update data on the database
     data = {}
     transaction = Transaction.objects.get(pk =pk)
