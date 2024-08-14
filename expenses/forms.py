@@ -21,6 +21,6 @@ class ProductForm(ModelForm):
 class InvoiceForm(ModelForm):
     class Meta:
         model = Invoice
-        fields = ['invoice_number', 'client', 'date']
+        fields = ['client', 'date']
 
 InvoiceProductFormset = inlineformset_factory(Invoice, InvoiceProduct, fields=('product', 'quantity', 'price',), extra=1, can_delete=False)

@@ -37,10 +37,20 @@ class Product(models.Model):
         return self.name
     
 class Invoice(models.Model):
-    invoice_number = models.CharField(max_length=50)
+    invoice_number = models.IntegerField(unique=True, blank=True, null=True)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     date = models.DateField()
     products = models.ManyToManyField(Product, through='InvoiceProduct')
+
+    def save(self, *args, **kwargs):
+        if self.invoice_number is None:
+            max_number = Invoice.objects.all().aggregate(largest=models.Max('invoice_number'))['largest']
+            if max_number is not None:
+                self.invoice_number = max_number + 1
+            else:
+                self.invoice_number = 1
+        super(Invoice, self).save(*args, **kwargs)
+
 
     def __str__(self):
         return self.invoice_number
